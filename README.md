@@ -49,6 +49,11 @@ class MyNet(nn.NN):
 使用simnet实现了一个简单的BP网络，数据集是 `mnist`，做了可视化训练`demo` , 效果如下图
 ![bp](https://github.com/SeanLee97/simnet/blob/master/docs/bp.png)
 
+## TODO
+- [ ] CNN
+- [ ] RNN及变体
+- [ ] 更多优化方式
+
 ## BUG记录
 - Adam的实现：实现倒是不难，只不过经常出现NAN的问题，已修复
 - CrossEntropy：交叉熵的导数计算一直困扰了我
