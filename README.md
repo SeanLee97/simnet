@@ -49,5 +49,10 @@ class MyNet(nn.NN):
 使用simnet实现了一个简单的BP网络，数据集是 `mnist`，做了可视化训练`demo` , 效果如下图
 ![bp](https://github.com/SeanLee97/simnet/blob/master/docs/bp.png)
 
+## BUG记录
+- Adam的实现：实现倒是不难，只不过经常出现NAN的问题，已修复
+- CrossEntropy：交叉熵的导数计算一直困扰了我
+- Tanh：使用tanh时有时候会出现NAN的情况，不知道是不是导数计算错误
+
 ## refrence
 - 此项目的可视化训练参照了[BP-Neural-Network](https://github.com/guyuchao/BP-Neural-Network)的实现，此项目的网络架构也是参照此项目，不过加入了更多的模块，包括`Adam`,`CrossEntropy`等
