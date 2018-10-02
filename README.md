@@ -1,4 +1,4 @@
-<p align="center">simnet</p>
+<p align="center">/ simnet /</p>
 
 为了理解深度学习框架的大致机理，使用numpy实现了一个简单的神经网络框架，主要原理是`链式求导法则`
 
@@ -47,7 +47,7 @@ class MyNet(nn.NN):
 
 ## 可视化训练
 使用simnet实现了一个简单的BP网络，数据集是 `mnist`，做了可视化训练`demo` , 效果如下图
-![bp]()
+![bp](https://github.com/SeanLee97/simnet/blob/master/docs/bp.png)
 
 ## refrence
 - 此项目的可视化训练参照了[BP-Neural-Network](https://github.com/guyuchao/BP-Neural-Network)的实现，此项目的网络架构也是参照此项目，不过加入了更多的模块，包括`Adam`,`CrossEntropy`等
