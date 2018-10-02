@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simnet Demo</title>
+    <!-- Bootstrap Styles-->
+    <link href="../static/assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="../static/assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- Morris Chart Styles-->
+    <link href="../static/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="../static/assets/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <style>
+        body{
+            background: #fff;
+            margin: 0 auto;
+        }
+        .header{
+            margin-top: 50px;
+            font-weight: bold;
+            font-size: 30px;
+            text-align: center;
+        }
+        .settings{
+            text-align: center;
+            margin-top: 30px;
+        }
+        .mnist{
+            width: 28px;
+            height:28px;
+            background: #666666;
+            border: black;
+            display: inline-block;
+            margin:5px;
+        }
+        .text{
+            width: 28px;
+            height:28px;
+            line-height: 28px;
+            background: #fffff0;
+            border: black;
+            display: inline-block;
+            margin: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        #display{
+            width: 100%;
+            padding: 20px;
+            background: #f1f1f1;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+        #mnist_group{
+            width: 420px;
+            height: 50px;
+            margin: 0 auto;
+            margin-top: 5px;
+        }
+        #text_group{
+            width: 420px;
+            margin: 0 auto;
+        }
+        .footer{text-align: center;padding: 20px;}
+    </style>
+</head>
+
+<body>
+    <div class="contrainer">
+        <div class="header">Simnet.</div>
+        <div class="settings">
+            <button class="btn btn-primary btn-large" data-toggle="modal" data-target="#myModal" type="button">设置参数</button>
+            <button id="begin" class="btn btn-success btn-large" type="button">开始训练</button>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">设置训练参数</h4>
+                    </div>
+                    <div class="form-group" style="padding: 10px;">
+                        <p>
+                            <label for="optim">优化方式</label>
+                            <div class="btn-group" id="optim">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span id="optim-tip">SGD</span> <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" onclick="$('#momentum-toggle').show();$('#optim-tip').text('SGD');$('#optim-type').val('sgd')">SGD</a></li>
+                                    <li><a href="#" onclick="$('#momentum-toggle').hide();$('#optim-tip').text('Adam');$('#optim-type').val('adam')">Adam</a></li>
+                                </ul>
+                            </div>
+                        </p>
+
+                        <input name="optim_type" id="optim-type" type="hidden" value="sgd"/>
+
+                        <label for="lr">学习率</label>
+                        <input type="text" class="form-control" id="lr" value="0.001" placeholder="请输入学习率">
+                        <br/>
+                        <div id="momentum-toggle">
+                            <label for="momentum">动量</label>
+                            <input type="text" class="form-control" id="momentum" value="0.9" placeholder="请输入动量">
+                            <br/>
+                        </div>
+                        <label for=epoches>迭代次数</label>
+                        <input type="text" class="form-control" id="epoches" value="10" placeholder="请输入迭代次数">
+                        <br/>
+                        <label for=valbatches>验证次数</label>
+                        <input type="text" class="form-control" id="valbatches" value="100" placeholder="请输入验证轮数">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="prepare" type="button" class="btn btn-primary" data-dismiss="modal">提交</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+        <div id="display">
+            <div id="mnist_group">
+                <div id="mnist0" class="mnist"></div>
+                <div id="mnist1" class="mnist"></div>
+                <div id="mnist2" class="mnist"></div>
+                <div id="mnist3" class="mnist"></div>
+                <div id="mnist4" class="mnist"></div>
+                <div id="mnist5" class="mnist"></div>
+                <div id="mnist6" class="mnist"></div>
+                <div id="mnist7" class="mnist"></div>
+                <div id="mnist8" class="mnist"></div>
+                <div id="mnist9" class="mnist"></div>
+            </div>
+            <div id="text_group">
+                <div id="text0" class="text"></div>
+                <div id="text1" class="text"></div>
+                <div id="text2" class="text"></div>
+                <div id="text3" class="text"></div>
+                <div id="text4" class="text"></div>
+                <div id="text5" class="text"></div>
+                <div id="text6" class="text"></div>
+                <div id="text7" class="text"></div>
+                <div id="text8" class="text"></div>
+                <div id="text9" class="text"></div>
+            </div>
+        </div>
+        <div id="loss_curve"></div>
+        <div class="footer"><a href='https://github.com/SeanLee97' target='_blank'>@seanlee</div>
+    </div>
+    <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="../static/jquery.min.js"></script>
+    <!-- Bootstrap Js -->
+    <script src="../static/assets/js/bootstrap.min.js"></script>
+	
+    <!-- Custom Js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript">
+        var trace1 = {
+            x: [],
+            y: []
+
+        };
+        var trace2 = {
+            x: [],
+            y: []
+        };
+        var layout_loss = {
+            xaxis: {
+                range: [ 0, 1000 ]
+            },
+            yaxis: {
+                range: [0 ,1]
+            },
+            title:'Loss Curve'
+        };
+        Plotly.newPlot('loss_curve', [trace1,trace2],layout_loss);
+    </script>
+    <script>
+        $('#prepare').click(function () {
+            $.ajax({
+                url : "/prepare",
+                type : 'post',
+                data: JSON.stringify({
+                    func:$('#func').val(),
+                    optim: $('#optim-type').val(),
+                    lr: parseFloat($('#lr').val()),
+                    momentum: parseFloat($('#momentum').val()), // 注意不要在此行增加逗号
+                    epoches:parseInt($('#epoches').val()),
+                    valbatches:parseInt($('#valbatches').val()),
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,//使用同步的方式,true为异步方式
+                fail:function(){
+                    alert("error");
+                }
+            });
+        });
+
+        $('#begin').click(function () {
+            $.ajax({
+                url : "/start_train",
+                type : 'post',
+                async: true,//使用同步的方式,true为异步方式
+                success : function(data){
+                    if(data.code==200){
+                        alert("训练完成！");
+                        window.clearInterval(lossTimeId);
+                        window.clearInterval(predTimeId);
+
+                    }
+                    else {
+                        window.clearInterval(lossTimeId);
+                        window.clearInterval(predTimeId);
+
+                    }
+                },
+                fail:function(){
+                    alert("error");
+                }
+            });
+            lossTimeId=window.setInterval(getloss,1000);
+            predTimeId=window.setInterval(getpred,1000);
+
+        });
+        function getpred() {
+            $.ajax({
+                type:"get",
+                url:"/get_predict",
+                datatype:"json",
+                async:true,
+                success:function(data) {
+                    predimg=data.Predimg;
+                    predlabel=data.Predlabel;
+                    for(var i=0;i<10;i++){
+                        putImg("mnist"+i,predimg["img"+i]);
+                        putText("text"+i,predlabel["label"+i])
+                    }
+                }
+            })
+
+        }
+        function getloss() {
+            $.ajax({
+                type:"get",
+                url:"/get_loss",
+                datatype:"json",
+                async:true,
+                success:function(data) {
+                    requestAnimationFrame(updateloss(data.Traindata,data.Valdata));
+                }
+            })
+        }
+
+        function putImg (id, base){  //将base64 img 放到#id中
+            var img = '<img width=28px height=28px src="data:image/png;base64,'+base+'" class="inline"/> ';
+            $('#'+id).html(img);
+        }
+        function putText (id, txt){  //将base64 img 放到#id中
+            $('#'+id).html(txt);
+        }
+        function updateloss (Traindata,Valdata) {
+            Plotly.animate('loss_curve',
+                {
+                    data: [Traindata],//,Valdata]
+                },
+                {
+                    transition: {
+                        duration: 100
+                    },
+                    frame: {
+                        duration: 100,
+                        redraw: false
+                    }
+                }
+            );
+        }
+
+    </script>
+
+</body>
+
+</html>
