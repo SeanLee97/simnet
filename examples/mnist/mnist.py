@@ -9,7 +9,6 @@ from io import BytesIO
 import base64
 from PIL import Image
 from sklearn.metrics import accuracy_score
-import matplotlib.pyplot as plt
 
 import simnet.nn as nn
 import simnet.optim as optim

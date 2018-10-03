@@ -23,7 +23,7 @@ def prepare():
 
 @app.route('/start_train',methods=['POST'])
 def start_train():
-    trainer.train_epoch()#, (a, b))
+    trainer.train_epoch()
     return jsonify({"code":200})
 
 @app.route('/get_loss',methods=['GET'])
@@ -71,4 +71,4 @@ def get_predict():
         return jsonify(Code="404")
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5500, threaded=True)
+    app.run(host="0.0.0.0", port=5000, threaded=True)
